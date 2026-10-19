@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>레퍼런스</title></head><body>
+
+<section data-tab="Python">
+<h3>입력·반환 형식</h3>
+<p><code>def solution(...)</code>의 매개변수로 값이 들어오고, <code>return</code> 값으로 채점합니다. <code>print</code>는 채점에 영향이 없고 [코드 실행]의 "출력" 칸에만 보입니다. 정수 배열은 <code>list</code>, 문자열 배열은 <code>list[str]</code>로 들어옵니다. 튜플을 반환해도 배열로 비교합니다.</p>
+
+<h3>문자열</h3>
+<table>
+<tr><th>코드</th><th>설명</th></tr>
+<tr><td><code>s.split()</code> / <code>s.split(':')</code></td><td>공백(연속 공백 포함) / 구분자로 나누기</td></tr>
+<tr><td><code>' '.join(lst)</code></td><td>리스트를 문자열로 합치기 (원소가 str이어야 함)</td></tr>
+<tr><td><code>s.strip()</code>, <code>s.lstrip('0')</code></td><td>양끝 공백 / 왼쪽의 '0' 제거</td></tr>
+<tr><td><code>s.startswith(x)</code>, <code>s.endswith(x)</code></td><td>접두사·접미사 확인</td></tr>
+<tr><td><code>s.find(x)</code> / <code>s.index(x)</code></td><td>위치 (없으면 -1 / ValueError)</td></tr>
+<tr><td><code>s.count(x)</code>, <code>s.replace(a, b)</code></td><td>개수, 바꾸기</td></tr>
+<tr><td><code>s.isdigit()</code>, <code>s.isalpha()</code></td><td>숫자·문자 여부 ('²' 같은 문자도 isdigit이 True)</td></tr>
+<tr><td><code>s.upper()</code>, <code>s.lower()</code></td><td>대소문자</td></tr>
+<tr><td><code>s[::-1]</code>, <code>s[a:b]</code></td><td>뒤집기, 슬라이스</td></tr>
+<tr><td><code>ord('a')</code>, <code>chr(97)</code></td><td>문자 ↔ 코드</td></tr>
+<tr><td><code>f'{x:02d}'</code>, <code>'%02d:%02d' % (h, m)</code></td><td>자릿수 맞추기</td></tr>
+<tr><td><code>int('0012')</code>, <code>int('ff', 16)</code></td><td>문자열 → 정수</td></tr>
+</table>
+<pre>h, m, s = map(int, "09:05:30".split(':'))
+sec = h * 3600 + m * 60 + s</pre>
+
+<h3>리스트</h3>
+<table>
+<tr><td><code>a.append(x)</code>, <code>a.pop()</code>, <code>a.pop(0)</code></td><td>끝에 추가, 끝에서 꺼내기 O(1), 앞에서 꺼내기 O(n)</td></tr>
+<tr><td><code>a.sort()</code>, <code>sorted(a)</code></td><td>제자리 정렬, 새 리스트 반환</td></tr>
+<tr><td><code>sorted(a, key=lambda x: (-x[1], x[0]))</code></td><td>다중 조건 정렬: 둘째 값 내림차순, 첫째 값 오름차순</td></tr>
+<tr><td><code>sorted(a, reverse=True)</code></td><td>내림차순</td></tr>
+<tr><td><code>[[0] * m for _ in range(n)]</code></td><td>2차원 배열 (<code>[[0]*m]*n</code>은 같은 행을 공유하므로 금지)</td></tr>
+<tr><td><code>enumerate(a, 1)</code>, <code>zip(a, b)</code></td><td>번호와 함께 / 묶어서 순회</td></tr>
+<tr><td><code>sum(a)</code>, <code>max(a, key=f)</code>, <code>min(a, default=0)</code></td><td>합, 최대(기준 함수), 빈 리스트 기본값</td></tr>
+<tr><td><code>a.index(x)</code>, <code>x in a</code></td><td>찾기 O(n). 자주 찾으면 set/dict로</td></tr>
+</table>
+
+<h3>dict · set</h3>
+<table>
+<tr><td><code>d.get(k, 0)</code></td><td>없으면 기본값</td></tr>
+<tr><td><code>d.setdefault(k, []).append(v)</code></td><td>그룹으로 모으기</td></tr>
+<tr><td><code>for k, v in d.items()</code></td><td>키·값 순회 (넣은 순서 유지)</td></tr>
+<tr><td><code>sorted(d.items(), key=lambda x: (-x[1], x[0]))</code></td><td>값 내림차순, 키 오름차순</td></tr>
+<tr><td><code>del d[k]</code>, <code>d.pop(k, None)</code></td><td>삭제 (pop은 없어도 에러 없음)</td></tr>
+<tr><td><code>s.add(x)</code>, <code>s.discard(x)</code>, <code>x in s</code></td><td>추가, 삭제(없어도 OK), 포함 여부 O(1)</td></tr>
+<tr><td><code>a | b</code>, <code>a &amp; b</code>, <code>a - b</code></td><td>합집합, 교집합, 차집합</td></tr>
+</table>
+
+<h3>collections</h3>
+<pre>from collections import Counter, deque, defaultdict
+
+c = Counter("banana")          # Counter({'a': 3, 'n': 2, 'b': 1})
+c.most_common(2)               # [('a', 3), ('n', 2)]
+g = defaultdict(list); g[k].append(v)
+q = deque([start]); q.append(x); q.popleft(); q.appendleft(x)</pre>
+
+<h3>heapq (최소 힙)</h3>
+<pre>import heapq
+h = []
+heapq.heappush(h, (cost, node))     # 튜플은 앞 원소부터 비교
+cost, node = heapq.heappop(h)
+heapq.heappush(h, -x)               # 최대 힙은 부호를 뒤집어서
+heapq.heapify(lst); h[0]            # 리스트를 힙으로 / 최솟값 조회</pre>
+
+<h3>bisect (정렬된 리스트에서 이분 탐색)</h3>
+<pre>from bisect import bisect_left, bisect_right
+a = [1, 3, 3, 5]
+bisect_left(a, 3)    # 1  : 3 이상이 처음 나오는 위치
+bisect_right(a, 3)   # 3  : 3 초과가 처음 나오는 위치
+bisect_right(a, hi) - bisect_left(a, lo)   # lo 이상 hi 이하 개수
+k = bisect_right(a, x)   # a[k-1]이 x 이하 중 가장 큰 값 (k > 0일 때)</pre>
+
+<h3>itertools</h3>
+<pre>from itertools import combinations, permutations, product, accumulate
+combinations([1, 2, 3], 2)    # (1,2) (1,3) (2,3)
+permutations([1, 2, 3], 2)    # (1,2) (1,3) (2,1) ...
+product('AB', repeat=2)       # AA AB BA BB
+product((a, '-'), (b, '-'))   # 각 자리를 값 또는 '-'로 바꾼 모든 조합
+list(accumulate([1, 2, 3]))   # [1, 3, 6]  누적 합</pre>
+
+<h3>BFS · 재귀 · 기타</h3>
+<pre>from collections import deque
+dist = [[-1] * m for _ in range(n)]
+dist[sr][sc] = 0
+q = deque([(sr, sc)])
+while q:
+    r, c = q.popleft()
+    for nr, nc in ((r+1, c), (r-1, c), (r, c+1), (r, c-1)):
+        if 0 &lt;= nr &lt; n and 0 &lt;= nc &lt; m and grid[nr][nc] != '#' and dist[nr][nc] == -1:
+            dist[nr][nc] = dist[r][c] + 1
+            q.append((nr, nc))
+
+import sys
+sys.setrecursionlimit(10 ** 6)   # 재귀 기본 한도는 1,000
+float('inf'), math.gcd(a, b), divmod(a, b), a // b, a % b, abs(x), round(x, 2)</pre>
+<h4>정수 연산 주의</h4>
+<p>금액·비율 계산은 실수 대신 정수로: <code>amount * 15 // 100000</code> (0.015%). 실수 <code>0.00015</code>는 정확히 표현되지 않아 절사 결과가 1 작아질 수 있습니다. 분수 비교는 <code>a * d &gt; c * b</code> 또는 <code>fractions.Fraction</code>.</p>
+</section>
+
+<section data-tab="SQL">
+<h3>이 연습 환경의 SQL 엔진</h3>
+<p>채점은 SQLite로 합니다. MySQL·Oracle 어느 쪽을 골라도 같은 엔진이며, 문제는 두 DB에서 똑같이 동작하는 표준 문법으로 풀리게 만들었습니다. 자주 쓰는 MySQL·Oracle 함수(<code>DATE_FORMAT</code>, <code>IFNULL</code>, <code>IF</code>, <code>YEAR</code>, <code>MONTH</code>, <code>DATEDIFF</code>, <code>TO_CHAR</code>, <code>TO_DATE</code>, <code>NVL</code>, <code>NVL2</code>, <code>DECODE</code>, <code>TRUNC</code>, <code>MOD</code>, <code>LPAD</code> 등)는 흉내 내어 지원합니다. Oracle의 <code>FETCH FIRST n ROWS ONLY</code>와 <code>FROM DUAL</code>도 됩니다.</p>
+<p><b>실제 DB와 다른 점</b>: 날짜·시각이 문자열로 저장되어 있어 <code>ORDERED_AT &lt;= '2026-11-01'</code>이 11월 1일 0시를 포함하지 않습니다(MySQL은 포함). 정수 ÷ 정수는 몫만 남습니다(MySQL은 소수). 평균은 <code>AVG</code>를 쓰세요. 실전처럼 연습하려면 날짜 범위는 <code>&gt;= 시작일 AND &lt; 다음날</code>로 쓰는 습관을 들이세요.</p>
+
+<h3>SELECT 실행 순서</h3>
+<pre>FROM → JOIN … ON → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT</pre>
+<ul>
+<li>WHERE에는 집계 함수를 쓸 수 없습니다 → 집계 조건은 HAVING.</li>
+<li>SELECT 별칭은 ORDER BY에서 쓸 수 있고, WHERE에서는 못 씁니다.</li>
+<li>GROUP BY를 쓰면 SELECT에는 GROUP BY 컬럼과 집계 함수만 씁니다(MySQL ONLY_FULL_GROUP_BY, Oracle 규칙).</li>
+</ul>
+
+<h3>JOIN</h3>
+<table>
+<tr><td><code>A JOIN B ON A.id = B.a_id</code></td><td>양쪽에 짝이 있는 행만</td></tr>
+<tr><td><code>A LEFT JOIN B ON …</code></td><td>A는 모두 남고, 짝이 없으면 B 컬럼이 NULL</td></tr>
+<tr><td><code>LEFT JOIN … WHERE B.id IS NULL</code></td><td>B에 짝이 없는 A 찾기</td></tr>
+<tr><td><code>LEFT JOIN B ON … AND B.status = 'X'</code></td><td>오른쪽 테이블 조건은 ON에. WHERE에 두면 INNER JOIN처럼 행이 사라짐</td></tr>
+</table>
+
+<h3>집계 · NULL</h3>
+<table>
+<tr><td><code>COUNT(*)</code> / <code>COUNT(col)</code> / <code>COUNT(DISTINCT col)</code></td><td>모든 행 / NULL 제외 / 중복 제외</td></tr>
+<tr><td><code>SUM</code>, <code>AVG</code>, <code>MAX</code>, <code>MIN</code></td><td>NULL은 무시. 대상이 없으면 NULL</td></tr>
+<tr><td><code>col IS NULL</code>, <code>col IS NOT NULL</code></td><td><code>= NULL</code>은 항상 거짓(UNKNOWN)</td></tr>
+<tr><td><code>COALESCE(a, b)</code></td><td>표준. MySQL <code>IFNULL(a, b)</code>, Oracle <code>NVL(a, b)</code></td></tr>
+<tr><td><code>x NOT IN (서브쿼리)</code></td><td>서브쿼리에 NULL이 하나라도 있으면 결과 0행 → NOT EXISTS 권장</td></tr>
+</table>
+
+<h3>CASE · 서브쿼리 · 윈도 함수</h3>
+<pre>CASE WHEN total &gt;= 100000000 THEN 'VIP'
+     WHEN total &gt;= 10000000 THEN 'GOLD'
+     ELSE 'BASIC' END AS TIER
+
+WHERE EXISTS (SELECT 1 FROM ORDERS O WHERE O.ACCOUNT_ID = A.ACCOUNT_ID)
+WHERE price &gt; (SELECT AVG(price) FROM T T2 WHERE T2.sector = T.sector)   -- 상관 서브쿼리
+
+ROW_NUMBER() OVER (PARTITION BY code ORDER BY price DESC, dt)   -- 1, 2, 3 (겹치지 않음)
+RANK()       OVER (ORDER BY score DESC)                         -- 1, 1, 3
+DENSE_RANK() OVER (ORDER BY score DESC)                         -- 1, 1, 2
+SUM(x)       OVER (PARTITION BY g)                              -- 그룹 합계를 행마다
+
+WITH T AS (SELECT …), R AS (SELECT …, ROW_NUMBER() OVER (…) AS RN FROM T)
+SELECT … FROM R WHERE RN &lt;= 2;      -- 윈도 결과로 거르려면 한 단계 감싸기</pre>
+
+<h3>날짜 · 문자열 함수 (MySQL ↔ Oracle)</h3>
+<table>
+<tr><th>하고 싶은 것</th><th>MySQL</th><th>Oracle</th></tr>
+<tr><td>연-월 문자열</td><td><code>DATE_FORMAT(d, '%Y-%m')</code></td><td><code>TO_CHAR(d, 'YYYY-MM')</code></td></tr>
+<tr><td>날짜 형식</td><td><code>DATE_FORMAT(d, '%Y-%m-%d')</code></td><td><code>TO_CHAR(d, 'YYYY-MM-DD')</code></td></tr>
+<tr><td>시:분:초</td><td><code>'%H:%i:%s'</code> (분은 %i)</td><td><code>'HH24:MI:SS'</code></td></tr>
+<tr><td>연·월·일 숫자</td><td><code>YEAR(d)</code>, <code>MONTH(d)</code>, <code>DAY(d)</code></td><td><code>EXTRACT(YEAR FROM d)</code>, <code>TO_CHAR(d, 'MM')</code></td></tr>
+<tr><td>날짜 차이(일)</td><td><code>DATEDIFF(a, b)</code></td><td><code>a - b</code></td></tr>
+<tr><td>문자열 일부</td><td><code>SUBSTR(s, 1, 7)</code>, <code>LEFT(s, 4)</code></td><td><code>SUBSTR(s, 1, 7)</code></td></tr>
+<tr><td>이어 붙이기</td><td><code>CONCAT(a, b, c)</code></td><td><code>a || b || c</code></td></tr>
+<tr><td>NULL 대체</td><td><code>IFNULL(a, b)</code></td><td><code>NVL(a, b)</code></td></tr>
+<tr><td>조건 값</td><td><code>IF(c, a, b)</code></td><td><code>DECODE(x, v1, r1, 기본값)</code></td></tr>
+<tr><td>반올림 · 버림</td><td><code>ROUND(x, 1)</code>, <code>TRUNCATE(x, 1)</code></td><td><code>ROUND(x, 1)</code>, <code>TRUNC(x, 1)</code></td></tr>
+<tr><td>상위 N개</td><td><code>LIMIT 5</code></td><td><code>FETCH FIRST 5 ROWS ONLY</code></td></tr>
+<tr><td>문자열 길이</td><td><code>CHAR_LENGTH(s)</code></td><td><code>LENGTH(s)</code></td></tr>
+</table>
+<p>※ SQLite 엔진에서 <code>EXTRACT</code>는 지원하지 않습니다. 이 연습 환경에서는 <code>TO_CHAR</code>나 <code>SUBSTR</code>를 쓰세요.</p>
+
+<h3>날짜 범위 함정</h3>
+<pre>-- DATETIME 컬럼에서 10월 전체
+WHERE ORDERED_AT &gt;= '2026-10-01' AND ORDERED_AT &lt; '2026-11-01'   -- O
+WHERE ORDERED_AT BETWEEN '2026-10-01' AND '2026-10-31'           -- X: 31일 0시 이후가 빠짐</pre>
+</section>
+
+<section data-tab="JavaScript">
+<h3>입력·반환</h3>
+<p><code>function solution(a, b)</code>의 return 값으로 채점합니다. <code>console.log</code> 출력은 "출력" 칸에만 보입니다.</p>
+<pre>s.split(' ').map(Number)
+arr.sort((a, b) =&gt; a - b)                      // 숫자 정렬은 비교 함수 필수
+arr.sort((a, b) =&gt; b[1] - a[1] || (a[0] &lt; b[0] ? -1 : a[0] &gt; b[0] ? 1 : 0))
+const m = new Map(); m.set(k, (m.get(k) || 0) + 1);
+const st = new Set(); st.has(x); st.add(x);
+Array.from({ length: n }, () =&gt; Array(m).fill(0))
+[...m.entries()], Object.entries(obj)
+Math.floor(a / b), a % b, BigInt(x)           // 2^53 넘는 정수는 BigInt
+String(x).padStart(2, '0')</pre>
+<p>재귀 깊이는 약 1만 단계에서 RangeError가 납니다. 깊은 탐색은 반복문(스택·큐)으로 쓰세요. 큐는 배열 <code>shift()</code>가 O(n)이므로 인덱스 포인터를 쓰세요.</p>
+</section>
+
+<section data-tab="Java">
+<h3>입력·반환</h3>
+<p><code>class Solution</code>의 <code>solution</code> 메서드 반환값으로 채점합니다. <code>System.out.println</code>은 "출력" 칸에만 보입니다.</p>
+<pre>import java.util.*;
+String[] p = s.split(" ");  int x = Integer.parseInt(p[0]);  long y = Long.parseLong(p[1]);
+Arrays.sort(arr);                          // int[] 오름차순
+Arrays.sort(objs, (a, b) -&gt; b[1] != a[1] ? Integer.compare(b[1], a[1]) : a[0].compareTo(b[0]));
+Map&lt;String, Integer&gt; m = new HashMap&lt;&gt;();  m.merge(k, 1, Integer::sum);  m.getOrDefault(k, 0);
+List&lt;Integer&gt; list = new ArrayList&lt;&gt;();  int[] out = list.stream().mapToInt(i -&gt; i).toArray();
+Deque&lt;Integer&gt; dq = new ArrayDeque&lt;&gt;();  dq.offer(x); dq.poll(); dq.push(x); dq.pop();
+PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; a[0] - b[0]);
+StringBuilder sb = new StringBuilder();  String.format("%02d", n);</pre>
+<p>금액 합계·곱셈은 int 범위(약 21억)를 넘기 쉽습니다. <code>long</code>을 쓰고, 곱하기 전에 <code>(long) a * b</code>로 바꾸세요.</p>
+</section>
+
+</body></html>

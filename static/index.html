@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>코딩테스트 모의 응시</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<!-- ===================== 시작 화면 ===================== -->
+<section id="view-home" class="view" hidden>
+  <header class="topbar">
+    <div class="brand">코딩테스트 모의 응시</div>
+    <div class="top-actions">
+      <button class="btn ghost" data-act="reference">레퍼런스</button>
+      <button class="btn ghost" data-act="settings">설정</button>
+    </div>
+  </header>
+  <main class="home">
+    <div id="resume-banner" class="banner" hidden></div>
+    <div class="mode-cards">
+      <div class="mode-card">
+        <div class="mode-eyebrow">실전 모의고사</div>
+        <h2>알고리즘 2문제 + SQL 1문제</h2>
+        <p id="exam-desc">보통 난이도 알고리즘 1개, 보통~어려움 알고리즘 1개, SQL 1개를 무작위로 뽑습니다. 문제 사이를 자유롭게 오갈 수 있고, 시간이 끝나면 마지막 코드가 자동으로 제출됩니다.</p>
+        <button class="btn primary" data-act="start-exam">시험 시작</button>
+      </div>
+      <div class="mode-card">
+        <div class="mode-eyebrow">문제별 연습</div>
+        <h2>시간 제한 없이 한 문제씩</h2>
+        <p>아래 목록에서 문제를 골라 풀어 보세요. 제출하면 최고 점수가 기록되고, 언제든 해설을 볼 수 있습니다.</p>
+        <button class="btn" data-act="scroll-list">문제 목록 보기</button>
+      </div>
+    </div>
+
+    <h3 class="sec-title" id="list-title">문제 목록</h3>
+    <div class="filters">
+      <div class="seg" data-filter="type">
+        <button data-v="all" class="on">전체</button><button data-v="algo">알고리즘</button><button data-v="sql">SQL</button>
+      </div>
+      <div class="seg" data-filter="level">
+        <button data-v="0" class="on">모든 난이도</button><button data-v="1">쉬움</button><button data-v="2">보통</button><button data-v="3">어려움</button>
+      </div>
+    </div>
+    <div class="table-wrap"><table class="plist" id="plist"></table></div>
+
+    <h3 class="sec-title">응시 기록</h3>
+    <div id="history"></div>
+  </main>
+</section>
+
+<!-- ===================== 시험(풀이) 화면 ===================== -->
+<section id="view-ws" class="view ws" hidden>
+  <header class="ws-top">
+    <div class="ws-title"><span id="ws-mode" class="badge"></span><span id="ws-name"></span></div>
+    <nav id="ws-tabs" class="ws-tabs"></nav>
+    <div class="ws-right-top">
+      <span id="timer" class="timer"></span>
+      <button class="btn ghost sm" data-act="reference">레퍼런스</button>
+      <button class="btn ghost sm" data-act="settings">설정</button>
+      <button class="btn ghost sm" id="btn-review" data-act="review-current" hidden>해설 보기</button>
+      <button class="btn danger sm" id="btn-end" data-act="end">시험 종료</button>
+    </div>
+  </header>
+  <div class="ws-main" id="ws-main">
+    <article class="ws-left" id="problem"></article>
+    <div class="vsplit" id="vsplit" title="드래그해서 너비 조절"></div>
+    <div class="ws-right">
+      <div class="ed-bar">
+        <span class="ed-label">solution</span>
+        <select id="lang"></select>
+      </div>
+      <div class="ed" id="editor"></div>
+      <div class="hsplit" id="hsplit" title="드래그해서 높이 조절"></div>
+      <div class="result" id="result">
+        <div class="result-head">실행 결과</div>
+        <div class="result-body" id="result-body"><div class="muted">실행 결과가 여기에 표시됩니다.</div></div>
+      </div>
+    </div>
+  </div>
+  <footer class="ws-bottom">
+    <div><button class="btn" id="btn-cases" data-act="cases">테스트 케이스 추가하기</button></div>
+    <div class="ws-buttons">
+      <button class="btn" data-act="reset">초기화</button>
+      <button class="btn" id="btn-run" data-act="run">코드 실행</button>
+      <button class="btn primary" id="btn-submit" data-act="submit">제출 후 채점하기</button>
+    </div>
+  </footer>
+</section>
+
+<!-- ===================== 결과 화면 ===================== -->
+<section id="view-result" class="view" hidden>
+  <header class="topbar">
+    <div class="brand">코딩테스트 모의 응시</div>
+    <div class="top-actions"><button class="btn ghost" data-act="home">처음으로</button></div>
+  </header>
+  <main class="home" id="result-main"></main>
+</section>
+
+<!-- ===================== 공용 레이어 ===================== -->
+<aside id="ref-panel" class="ref-panel" hidden>
+  <div class="ref-head">
+    <div class="seg" id="ref-tabs"></div>
+    <button class="btn ghost sm" data-act="close-ref">닫기</button>
+  </div>
+  <div class="ref-body" id="ref-body"></div>
+</aside>
+
+<div id="modal" class="modal" hidden>
+  <div class="modal-box" id="modal-box"></div>
+</div>
+
+<div id="overlay" class="overlay" hidden><div class="overlay-box" id="overlay-msg"></div></div>
+<div id="toast" class="toast" hidden></div>
+
+<script src="/app.js"></script>
+</body>
+</html>
